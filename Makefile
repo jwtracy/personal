@@ -11,8 +11,8 @@ apiserver: build-apiserver push-apiserver
 proto-%:
 	cd src/apiserver/$* && protoc --proto_path=$(GOPATH)/src:. \
 			--go_opt=paths=source_relative \
-			--twirp_out=./pb \
-			--go_out=./pb \
+			--twirp_out=. \
+			--go_out=. \
 			--descriptor_set_out=pb/$*.pb \
 			pb/$*.proto
 

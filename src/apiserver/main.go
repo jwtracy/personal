@@ -13,7 +13,7 @@ import (
 func main() {
 	server := greeter.NewServer("John Tracy", "See you, space cowboy!", 8080)
 
-	lis, err := net.Listen("tcp", fmt.Sprint(server.Port))
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", server.Port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}

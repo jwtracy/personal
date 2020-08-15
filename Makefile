@@ -8,13 +8,13 @@ protos: proto-greeter
 
 apiserver: build-apiserver push-apiserver 
 
+#--go_opt=paths=source_relative
 proto-%:
-	cd src/apiserver/$* && protoc --proto_path=$(GOPATH)/src:. \
-			--go_opt=paths=source_relative \
+	cd src/apiserver/$*/pb && protoc --proto_path=$(GOPATH)/src:. \
 			--twirp_out=. \
 			--go_out=. \
-			--descriptor_set_out=pb/$*.pb \
-			pb/$*.proto
+			--descriptor_set_out=$*.pb \
+			$*.proto
 
 deploy: generate-apiserver
 	kustomize build deploy/ > deploy/manifest.yaml
@@ -33,6 +33,6 @@ push-%:
 	
 clean:
 	find deploy -name manifest.yaml -delete
-	find \( -wholename "*/pb/*.pb.go" -o -wholename "*/pb/*.pb" \) -delete
+	find \( -wholename "*/pb/*.twirp.go" -o -wholename "*/pb/*.pb.go" -o -wholename "*/pb/*.pb" \) -delete
 
 .PHONY: deploy apiserver

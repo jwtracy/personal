@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package app.greeter;
 
-// option go_package = "github.com/johnwtracy/personal/src/apiserver/greeter";
+// option go_package = "github.com/johnwtracy/personal/src/apiserver/greeter/pb";
 
 // The greeting service definition.
 service Greeter {

@@ -16,8 +16,8 @@ spec:
         app: app
     spec:
       containers:
-      - image: registry.digitalocean.com/jwtracy-personal/app-apiserver
-        imagePullPolicy: Always
+      - image: app-apiserver
+        imagePullPolicy: IfNotPresent
         name: app-apiserver
         resources:
           requests:

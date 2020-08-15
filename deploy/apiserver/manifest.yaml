@@ -6,15 +6,13 @@ metadata:
   name: app
   namespace: app
 spec:
-  externalIPs:
-  - 68.183.249.43
   ports:
   - name: app
     port: 8080
     protocol: TCP
   selector:
     app: app
-  type: NodePort
+  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -34,8 +32,8 @@ spec:
         app: app
     spec:
       containers:
-      - image: registry.digitalocean.com/jwtracy-personal/app-apiserver
-        imagePullPolicy: Always
+      - image: registry.digitalocean.com/jwtracy-personal/app-apiserver:20200815-1851
+        imagePullPolicy: IfNotPresent
         name: app-apiserver
         resources:
           limits:

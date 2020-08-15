@@ -7,3 +7,7 @@ commonLabels:
 resources:
 - ingress.yaml
 - apiserver/manifest.yaml
+images:
+- name: app-apiserver
+  newName: registry.digitalocean.com/jwtracy-personal/app-apiserver
+  newTag: tag

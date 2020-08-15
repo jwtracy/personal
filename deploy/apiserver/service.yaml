@@ -6,12 +6,10 @@ metadata:
   name: app
   namespace: app
 spec:
-  externalIPs:
-  - 68.183.249.43
   ports:
   - name: app
     port: 8080
     protocol: TCP
   selector:
     app: app
-  type: NodePort
+  type: LoadBalancer

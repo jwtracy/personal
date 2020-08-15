@@ -2,27 +2,24 @@ package main
 
 import (
 	"fmt"
-	"net/http"
+	"log"
+	"net"
+
+	"github.com/johnwtracy/personal/src/apiserver/greeter"
+	pb "github.com/johnwtracy/personal/src/apiserver/greeter/pb"
+	"google.golang.org/grpc"
 )
 
-func hello(w http.ResponseWriter, req *http.Request) {
-
-	fmt.Fprintf(w, "hello\n")
-}
-
-func headers(w http.ResponseWriter, req *http.Request) {
-
-	for name, headers := range req.Header {
-		for _, h := range headers {
-			fmt.Fprintf(w, "%v: %v\n", name, h)
-		}
-	}
-}
-
 func main() {
+	server := greeter.NewServer("John Tracy", "See you, space cowboy!", 8080)
 
-	http.HandleFunc("/hello", hello)
-	http.HandleFunc("/headers", headers)
-
-	http.ListenAndServe(":8080", nil)
+	lis, err := net.Listen("tcp", fmt.Sprint(server.Port))
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+	s := grpc.NewServer()
+	pb.RegisterGreeterServer(s, server)
+	if err := s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
 }

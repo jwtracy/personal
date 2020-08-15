@@ -9,7 +9,12 @@ deploy: generate-apiserver
 generate-%:
 	kustomize build deploy/$*/ > deploy/$*/manifest.yaml
 
-src: build-apiserver push-apiserver 
+src: apiserver
+
+apiserver: proto-apiserver build-apiserver push-apiserver 
+
+proto-%:
+	protoc -Isrc/apiserver/$* --go_opt=paths=source_relative --go_out=plugins=grpc:. pb/$*.proto
 
 build-%: 
 	docker build -t registry.digitalocean.com/jwtracy-personal/app-$*:$(RELEASE_TAG) \
@@ -23,3 +28,4 @@ deploy-%:
 
 clean:
 	find deploy -name manifest.yaml -delete
+	find -wholename "*/pb/*.pb.go" -delete

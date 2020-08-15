@@ -1,9 +1,9 @@
 FROM golang:1.13-buster as builder
 
-WORKDIR /go/src/app
-ADD . /go/src/app
+WORKDIR /go/src/github.com/johnwtracy/personal/apiserver
+ADD . /go/src/github.com/johnwtracy/personal/apiserver
 
-RUN GOOS=linux GOARCH=amd64 go build -o /go/bin/app
+RUN GO111MODULE=on GOOS=linux GOARCH=amd64 go build -o /go/bin/app
 
 FROM gcr.io/distroless/base-debian10
 

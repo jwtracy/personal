@@ -1,4 +1,4 @@
-RELEASE_TAG ?= $(shell ./release.sh 2> /dev/null)
+RELEASE_TAG := $(shell ./release.sh 2> /dev/null)
 
 all: src deploy
 

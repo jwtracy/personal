@@ -9,10 +9,11 @@ protos: proto-greeter
 apiserver: build-apiserver push-apiserver 
 
 proto-%:
-	protoc -Isrc/apiserver/$* \
+	cd src/apiserver/$* && protoc --proto_path=$(GOPATH)/src:. \
 			--go_opt=paths=source_relative \
-			--go_out=plugins=grpc:src/apiserver/$* \
-			--descriptor_set_out=src/apiserver/$*/pb/$*.pb \
+			--twirp_out=./pb \
+			--go_out=./pb \
+			--descriptor_set_out=pb/$*.pb \
 			pb/$*.proto
 
 deploy: generate-apiserver

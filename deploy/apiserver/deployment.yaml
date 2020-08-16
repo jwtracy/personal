@@ -19,6 +19,9 @@ spec:
       - image: app-apiserver
         imagePullPolicy: IfNotPresent
         name: app-apiserver
+        args:
+        - -v=10
+        - -alsologtostderr=true
         resources:
           requests:
             cpu: 100m

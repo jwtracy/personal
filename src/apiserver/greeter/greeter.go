@@ -17,8 +17,7 @@ type Server struct {
 func logReceived(ctx context.Context) (context.Context, error) {
 	pkg, _ := twirp.PackageName(ctx)
 	service, _ := twirp.ServiceName(ctx)
-	method, _ := twirp.MethodName(ctx)
-	glog.Infof("received: package: %s, service: %s, method: %s", pkg, service, method)
+	glog.Infof("received: package: %s, service: %s", pkg, service)
 	return ctx, nil
 }
 
@@ -39,7 +38,8 @@ func NewServer(name, greeting string) pb.TwirpServer {
 
 func (s *Server) Hello(ctx context.Context, request *pb.HelloRequest) (*pb.HelloReply, error) {
 
-	glog.Infof("incoming Hello() request")
+	method, _ := twirp.MethodName(ctx)
+	glog.Infof("incoming %s request", method)
 
 	return &pb.HelloReply{
 		Message: fmt.Sprintf("Hello %s, I am %s. %s", request.Name, s.Name, s.Greeting),

@@ -32,7 +32,10 @@ spec:
         app: app
     spec:
       containers:
-      - image: registry.digitalocean.com/jwtracy-personal/app-apiserver:20200816-1847
+      - args:
+        - -v=10
+        - -alsologtostderr=true
+        image: registry.digitalocean.com/jwtracy-personal/app-apiserver:20200816-2120
         imagePullPolicy: IfNotPresent
         name: app-apiserver
         resources:

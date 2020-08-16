@@ -1,13 +1,15 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-commonLabels:
-  app: app
-
 resources:
 - ingress.yaml
 - apiserver/manifest.yaml
+- webapp/manifest.yaml
 images:
 - name: app-apiserver
   newName: registry.digitalocean.com/jwtracy-personal/app-apiserver
+  newTag: tag
+images:
+- name: app-webapp
+  newName: registry.digitalocean.com/jwtracy-personal/app-webapp
   newTag: tag

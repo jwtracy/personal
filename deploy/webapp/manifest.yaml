@@ -2,48 +2,46 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: app
-  name: app
+    app: webapp
+  name: webapp
   namespace: app
 spec:
   externalIPs:
   - 68.183.249.43
   ports:
-  - name: app
-    port: 8080
+  - name: webapp
+    port: 4500
     protocol: TCP
+    targetPort: 80
   selector:
-    app: app
+    app: webapp
   type: NodePort
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: app
-  name: app
+    app: webapp
+  name: webapp
   namespace: app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: app
+      app: webapp
   template:
     metadata:
       labels:
-        app: app
+        app: webapp
     spec:
       containers:
-      - args:
-        - -v=10
-        - -alsologtostderr=true
-        image: registry.digitalocean.com/jwtracy-personal/app-apiserver:20200816-2320
+      - image: registry.digitalocean.com/jwtracy-personal/app-webapp:20200816-2320
         imagePullPolicy: IfNotPresent
-        name: app-apiserver
+        name: app-webapp
         resources:
           limits:
-            cpu: 200m
-            memory: 128Mi
+            cpu: 512m
+            memory: 512Mi
           requests:
-            cpu: 100m
-            memory: 128Mi
+            cpu: 256m
+            memory: 256Mi

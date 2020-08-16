@@ -2,9 +2,11 @@ RELEASE_TAG := $(shell ./release.sh 2> /dev/null)
 
 all: src deploy
 
-src: apiserver
+src: apiserver webapp
 
 protos: proto-greeter
+
+webapp: build-webapp push-webapp 
 
 apiserver: build-apiserver push-apiserver 
 
@@ -16,7 +18,7 @@ proto-%:
 			--descriptor_set_out=$*.pb \
 			$*.proto
 
-deploy: generate-apiserver
+deploy: generate-apiserver generate-webapp
 	kustomize build deploy/ > deploy/manifest.yaml
 	kubectl apply -f deploy/manifest.yaml
 

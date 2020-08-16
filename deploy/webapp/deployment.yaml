@@ -2,30 +2,27 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: app
-  name: app
+    app: webapp
+  name: webapp
   namespace: app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: app
+      app: webapp
   template:
     metadata:
       labels:
-        app: app
+        app: webapp
     spec:
       containers:
-      - image: app-apiserver
+      - image: app-webapp
         imagePullPolicy: IfNotPresent
-        name: app-apiserver
-        args:
-        - -v=10
-        - -alsologtostderr=true
+        name: app-webapp
         resources:
           requests:
-            cpu: 100m
-            memory: 128Mi
+            cpu: 256m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 128Mi
+            cpu: 512m
+            memory: 512Mi

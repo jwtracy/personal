@@ -6,6 +6,17 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
-  backend:
-    serviceName: app
-    servicePort: 8080
+  rules:
+  - http:
+      paths:
+      - path: /app($|/)(.*)
+        pathType: Prefix
+        backend:
+          serviceName: webapp
+          servicePort: 4500
+      - path: /api(/)(.*)
+        pathType: Prefix
+        backend:
+          serviceName: app
+          servicePort: 8080
+

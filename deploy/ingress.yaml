@@ -9,11 +9,3 @@ spec:
   backend:
     serviceName: app
     servicePort: 8080
-  rules:
-  - http:
-      paths:
-      - path: /app(/|$)(.*)
-        pathType: Prefix
-        backend:
-          serviceName: app
-          servicePort: 8080

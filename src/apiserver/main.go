@@ -1,25 +1,28 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"log"
-	"net"
+	"net/http"
 
 	"github.com/johnwtracy/personal/src/apiserver/greeter"
-	pb "github.com/johnwtracy/personal/src/apiserver/greeter/pb"
-	"google.golang.org/grpc"
+)
+
+var (
+	port = flag.Int("port", 8080, "port for the server")
 )
 
 func main() {
-	server := greeter.NewServer("John Tracy", "See you, space cowboy!", 8080)
+	flag.Parse()
 
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", server.Port))
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
-	}
-	s := grpc.NewServer()
-	pb.RegisterGreeterServer(s, server)
-	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
-	}
+	greeterService := greeter.NewServer(
+		"John Tracy",
+		"See you, space cowboy!",
+	)
+
+	mux := http.NewServeMux()
+
+	mux.Handle(greeterService.PathPrefix(), greeterService)
+
+	http.ListenAndServe(fmt.Sprintf(":%d", *port), mux)
 }

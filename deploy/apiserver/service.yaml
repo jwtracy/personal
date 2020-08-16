@@ -12,4 +12,4 @@ spec:
     protocol: TCP
   selector:
     app: app
-  type: LoadBalancer
+  type: NodePort

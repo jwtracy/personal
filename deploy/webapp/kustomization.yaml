@@ -7,4 +7,4 @@ resources:
 images:
 - name: app-webapp
   newName: registry.digitalocean.com/jwtracy-personal/app-webapp
-  newTag: 20200817-2259
+  newTag: 20200817-2341

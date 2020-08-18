@@ -7,4 +7,4 @@ resources:
 images:
 - name: app-apiserver
   newName: registry.digitalocean.com/jwtracy-personal/app-apiserver
-  newTag: 20200817-1950
+  newTag: 20200817-2022

@@ -5,7 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 
@@ -26,10 +28,11 @@ registerLocaleData(en);
   ],
   imports: [
      NzLayoutModule,
+        NzAvatarModule,
      NzMenuModule,
      NzPageHeaderModule,
         NzBreadCrumbModule,
-
+        NzCardModule,
 
     BrowserModule,
     AppRoutingModule,

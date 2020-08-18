@@ -6,6 +6,9 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
+  backend:
+    serviceName: webapp
+    servicePort: 4500
   rules:
   - http:
       paths:

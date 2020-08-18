@@ -35,7 +35,7 @@ spec:
         app: webapp
     spec:
       containers:
-      - image: registry.digitalocean.com/jwtracy-personal/app-webapp:20200816-2320
+      - image: registry.digitalocean.com/jwtracy-personal/app-webapp:20200817-1950
         imagePullPolicy: IfNotPresent
         name: app-webapp
         resources:

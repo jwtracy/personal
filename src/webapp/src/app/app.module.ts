@@ -3,6 +3,13 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+
+
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -18,6 +25,12 @@ registerLocaleData(en);
     AppComponent
   ],
   imports: [
+     NzLayoutModule,
+     NzMenuModule,
+     NzPageHeaderModule,
+        NzBreadCrumbModule,
+
+
     BrowserModule,
     AppRoutingModule,
     FormsModule,

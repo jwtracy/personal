@@ -10,7 +10,7 @@ import (
 var (
 	// BlogPostsColumns holds the columns for the "blog_posts" table.
 	BlogPostsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "head", Type: field.TypeString, Size: 32},
 		{Name: "body", Type: field.TypeString, Size: 2147483647},
 		{Name: "create_time", Type: field.TypeTime},
@@ -25,7 +25,7 @@ var (
 	}
 	// ProjectsColumns holds the columns for the "projects" table.
 	ProjectsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "head", Type: field.TypeString, Size: 32},
 		{Name: "body", Type: field.TypeString, Size: 2147483647},
 		{Name: "create_time", Type: field.TypeTime},
@@ -55,7 +55,7 @@ var (
 	// TopicBlogPostsColumns holds the columns for the "topic_blog_posts" table.
 	TopicBlogPostsColumns = []*schema.Column{
 		{Name: "topic_id", Type: field.TypeInt},
-		{Name: "blog_post_id", Type: field.TypeUUID},
+		{Name: "blog_post_id", Type: field.TypeInt},
 	}
 	// TopicBlogPostsTable holds the schema information for the "topic_blog_posts" table.
 	TopicBlogPostsTable = &schema.Table{
@@ -82,7 +82,7 @@ var (
 	// TopicProjectsColumns holds the columns for the "topic_projects" table.
 	TopicProjectsColumns = []*schema.Column{
 		{Name: "topic_id", Type: field.TypeInt},
-		{Name: "project_id", Type: field.TypeUUID},
+		{Name: "project_id", Type: field.TypeInt},
 	}
 	// TopicProjectsTable holds the schema information for the "topic_projects" table.
 	TopicProjectsTable = &schema.Table{

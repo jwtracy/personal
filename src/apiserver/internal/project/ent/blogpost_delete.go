@@ -70,7 +70,7 @@ func (bpd *BlogPostDelete) sqlExec(ctx context.Context) (int, error) {
 		Node: &sqlgraph.NodeSpec{
 			Table: blogpost.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeInt,
 				Column: blogpost.FieldID,
 			},
 		},

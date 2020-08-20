@@ -9,7 +9,6 @@ import (
 
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
-	"github.com/google/uuid"
 	"github.com/johnwtracy/personal/src/apiserver/internal/project/ent/blogpost"
 	"github.com/johnwtracy/personal/src/apiserver/internal/project/ent/project"
 	"github.com/johnwtracy/personal/src/apiserver/internal/project/ent/topic"
@@ -29,14 +28,14 @@ func (tc *TopicCreate) SetTag(s string) *TopicCreate {
 }
 
 // AddBlogPostIDs adds the blog_posts edge to BlogPost by ids.
-func (tc *TopicCreate) AddBlogPostIDs(ids ...uuid.UUID) *TopicCreate {
+func (tc *TopicCreate) AddBlogPostIDs(ids ...int) *TopicCreate {
 	tc.mutation.AddBlogPostIDs(ids...)
 	return tc
 }
 
 // AddBlogPosts adds the blog_posts edges to BlogPost.
 func (tc *TopicCreate) AddBlogPosts(b ...*BlogPost) *TopicCreate {
-	ids := make([]uuid.UUID, len(b))
+	ids := make([]int, len(b))
 	for i := range b {
 		ids[i] = b[i].ID
 	}
@@ -44,14 +43,14 @@ func (tc *TopicCreate) AddBlogPosts(b ...*BlogPost) *TopicCreate {
 }
 
 // AddProjectIDs adds the projects edge to Project by ids.
-func (tc *TopicCreate) AddProjectIDs(ids ...uuid.UUID) *TopicCreate {
+func (tc *TopicCreate) AddProjectIDs(ids ...int) *TopicCreate {
 	tc.mutation.AddProjectIDs(ids...)
 	return tc
 }
 
 // AddProjects adds the projects edges to Project.
 func (tc *TopicCreate) AddProjects(p ...*Project) *TopicCreate {
-	ids := make([]uuid.UUID, len(p))
+	ids := make([]int, len(p))
 	for i := range p {
 		ids[i] = p[i].ID
 	}
@@ -157,7 +156,7 @@ func (tc *TopicCreate) createSpec() (*Topic, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
+					Type:   field.TypeInt,
 					Column: blogpost.FieldID,
 				},
 			},
@@ -176,7 +175,7 @@ func (tc *TopicCreate) createSpec() (*Topic, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
+					Type:   field.TypeInt,
 					Column: project.FieldID,
 				},
 			},

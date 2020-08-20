@@ -10,7 +10,6 @@ import (
 
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
-	"github.com/google/uuid"
 	"github.com/johnwtracy/personal/src/apiserver/internal/project/ent/blogpost"
 	"github.com/johnwtracy/personal/src/apiserver/internal/project/ent/topic"
 )
@@ -59,12 +58,6 @@ func (bpc *BlogPostCreate) SetNillableUpdateTime(t *time.Time) *BlogPostCreate {
 	if t != nil {
 		bpc.SetUpdateTime(*t)
 	}
-	return bpc
-}
-
-// SetID sets the id field.
-func (bpc *BlogPostCreate) SetID(u uuid.UUID) *BlogPostCreate {
-	bpc.mutation.SetID(u)
 	return bpc
 }
 
@@ -165,6 +158,8 @@ func (bpc *BlogPostCreate) sqlSave(ctx context.Context) (*BlogPost, error) {
 		}
 		return nil, err
 	}
+	id := _spec.ID.Value.(int64)
+	bp.ID = int(id)
 	return bp, nil
 }
 
@@ -174,15 +169,11 @@ func (bpc *BlogPostCreate) createSpec() (*BlogPost, *sqlgraph.CreateSpec) {
 		_spec = &sqlgraph.CreateSpec{
 			Table: blogpost.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeInt,
 				Column: blogpost.FieldID,
 			},
 		}
 	)
-	if id, ok := bpc.mutation.ID(); ok {
-		bp.ID = id
-		_spec.ID.Value = id
-	}
 	if value, ok := bpc.mutation.Head(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -276,6 +267,8 @@ func (bpcb *BlogPostCreateBulk) Save(ctx context.Context) ([]*BlogPost, error) {
 				if err != nil {
 					return nil, err
 				}
+				id := specs[i].ID.Value.(int64)
+				nodes[i].ID = int(id)
 				return nodes[i], nil
 			})
 			for i := len(builder.hooks) - 1; i >= 0; i-- {

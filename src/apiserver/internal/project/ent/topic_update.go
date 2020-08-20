@@ -9,7 +9,6 @@ import (
 	"github.com/facebook/ent/dialect/sql"
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
-	"github.com/google/uuid"
 	"github.com/johnwtracy/personal/src/apiserver/internal/project/ent/blogpost"
 	"github.com/johnwtracy/personal/src/apiserver/internal/project/ent/predicate"
 	"github.com/johnwtracy/personal/src/apiserver/internal/project/ent/project"
@@ -37,14 +36,14 @@ func (tu *TopicUpdate) SetTag(s string) *TopicUpdate {
 }
 
 // AddBlogPostIDs adds the blog_posts edge to BlogPost by ids.
-func (tu *TopicUpdate) AddBlogPostIDs(ids ...uuid.UUID) *TopicUpdate {
+func (tu *TopicUpdate) AddBlogPostIDs(ids ...int) *TopicUpdate {
 	tu.mutation.AddBlogPostIDs(ids...)
 	return tu
 }
 
 // AddBlogPosts adds the blog_posts edges to BlogPost.
 func (tu *TopicUpdate) AddBlogPosts(b ...*BlogPost) *TopicUpdate {
-	ids := make([]uuid.UUID, len(b))
+	ids := make([]int, len(b))
 	for i := range b {
 		ids[i] = b[i].ID
 	}
@@ -52,14 +51,14 @@ func (tu *TopicUpdate) AddBlogPosts(b ...*BlogPost) *TopicUpdate {
 }
 
 // AddProjectIDs adds the projects edge to Project by ids.
-func (tu *TopicUpdate) AddProjectIDs(ids ...uuid.UUID) *TopicUpdate {
+func (tu *TopicUpdate) AddProjectIDs(ids ...int) *TopicUpdate {
 	tu.mutation.AddProjectIDs(ids...)
 	return tu
 }
 
 // AddProjects adds the projects edges to Project.
 func (tu *TopicUpdate) AddProjects(p ...*Project) *TopicUpdate {
-	ids := make([]uuid.UUID, len(p))
+	ids := make([]int, len(p))
 	for i := range p {
 		ids[i] = p[i].ID
 	}
@@ -72,14 +71,14 @@ func (tu *TopicUpdate) Mutation() *TopicMutation {
 }
 
 // RemoveBlogPostIDs removes the blog_posts edge to BlogPost by ids.
-func (tu *TopicUpdate) RemoveBlogPostIDs(ids ...uuid.UUID) *TopicUpdate {
+func (tu *TopicUpdate) RemoveBlogPostIDs(ids ...int) *TopicUpdate {
 	tu.mutation.RemoveBlogPostIDs(ids...)
 	return tu
 }
 
 // RemoveBlogPosts removes blog_posts edges to BlogPost.
 func (tu *TopicUpdate) RemoveBlogPosts(b ...*BlogPost) *TopicUpdate {
-	ids := make([]uuid.UUID, len(b))
+	ids := make([]int, len(b))
 	for i := range b {
 		ids[i] = b[i].ID
 	}
@@ -87,14 +86,14 @@ func (tu *TopicUpdate) RemoveBlogPosts(b ...*BlogPost) *TopicUpdate {
 }
 
 // RemoveProjectIDs removes the projects edge to Project by ids.
-func (tu *TopicUpdate) RemoveProjectIDs(ids ...uuid.UUID) *TopicUpdate {
+func (tu *TopicUpdate) RemoveProjectIDs(ids ...int) *TopicUpdate {
 	tu.mutation.RemoveProjectIDs(ids...)
 	return tu
 }
 
 // RemoveProjects removes projects edges to Project.
 func (tu *TopicUpdate) RemoveProjects(p ...*Project) *TopicUpdate {
-	ids := make([]uuid.UUID, len(p))
+	ids := make([]int, len(p))
 	for i := range p {
 		ids[i] = p[i].ID
 	}
@@ -192,7 +191,7 @@ func (tu *TopicUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
+					Type:   field.TypeInt,
 					Column: blogpost.FieldID,
 				},
 			},
@@ -211,7 +210,7 @@ func (tu *TopicUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
+					Type:   field.TypeInt,
 					Column: blogpost.FieldID,
 				},
 			},
@@ -230,7 +229,7 @@ func (tu *TopicUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
+					Type:   field.TypeInt,
 					Column: project.FieldID,
 				},
 			},
@@ -249,7 +248,7 @@ func (tu *TopicUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
+					Type:   field.TypeInt,
 					Column: project.FieldID,
 				},
 			},
@@ -284,14 +283,14 @@ func (tuo *TopicUpdateOne) SetTag(s string) *TopicUpdateOne {
 }
 
 // AddBlogPostIDs adds the blog_posts edge to BlogPost by ids.
-func (tuo *TopicUpdateOne) AddBlogPostIDs(ids ...uuid.UUID) *TopicUpdateOne {
+func (tuo *TopicUpdateOne) AddBlogPostIDs(ids ...int) *TopicUpdateOne {
 	tuo.mutation.AddBlogPostIDs(ids...)
 	return tuo
 }
 
 // AddBlogPosts adds the blog_posts edges to BlogPost.
 func (tuo *TopicUpdateOne) AddBlogPosts(b ...*BlogPost) *TopicUpdateOne {
-	ids := make([]uuid.UUID, len(b))
+	ids := make([]int, len(b))
 	for i := range b {
 		ids[i] = b[i].ID
 	}
@@ -299,14 +298,14 @@ func (tuo *TopicUpdateOne) AddBlogPosts(b ...*BlogPost) *TopicUpdateOne {
 }
 
 // AddProjectIDs adds the projects edge to Project by ids.
-func (tuo *TopicUpdateOne) AddProjectIDs(ids ...uuid.UUID) *TopicUpdateOne {
+func (tuo *TopicUpdateOne) AddProjectIDs(ids ...int) *TopicUpdateOne {
 	tuo.mutation.AddProjectIDs(ids...)
 	return tuo
 }
 
 // AddProjects adds the projects edges to Project.
 func (tuo *TopicUpdateOne) AddProjects(p ...*Project) *TopicUpdateOne {
-	ids := make([]uuid.UUID, len(p))
+	ids := make([]int, len(p))
 	for i := range p {
 		ids[i] = p[i].ID
 	}
@@ -319,14 +318,14 @@ func (tuo *TopicUpdateOne) Mutation() *TopicMutation {
 }
 
 // RemoveBlogPostIDs removes the blog_posts edge to BlogPost by ids.
-func (tuo *TopicUpdateOne) RemoveBlogPostIDs(ids ...uuid.UUID) *TopicUpdateOne {
+func (tuo *TopicUpdateOne) RemoveBlogPostIDs(ids ...int) *TopicUpdateOne {
 	tuo.mutation.RemoveBlogPostIDs(ids...)
 	return tuo
 }
 
 // RemoveBlogPosts removes blog_posts edges to BlogPost.
 func (tuo *TopicUpdateOne) RemoveBlogPosts(b ...*BlogPost) *TopicUpdateOne {
-	ids := make([]uuid.UUID, len(b))
+	ids := make([]int, len(b))
 	for i := range b {
 		ids[i] = b[i].ID
 	}
@@ -334,14 +333,14 @@ func (tuo *TopicUpdateOne) RemoveBlogPosts(b ...*BlogPost) *TopicUpdateOne {
 }
 
 // RemoveProjectIDs removes the projects edge to Project by ids.
-func (tuo *TopicUpdateOne) RemoveProjectIDs(ids ...uuid.UUID) *TopicUpdateOne {
+func (tuo *TopicUpdateOne) RemoveProjectIDs(ids ...int) *TopicUpdateOne {
 	tuo.mutation.RemoveProjectIDs(ids...)
 	return tuo
 }
 
 // RemoveProjects removes projects edges to Project.
 func (tuo *TopicUpdateOne) RemoveProjects(p ...*Project) *TopicUpdateOne {
-	ids := make([]uuid.UUID, len(p))
+	ids := make([]int, len(p))
 	for i := range p {
 		ids[i] = p[i].ID
 	}
@@ -437,7 +436,7 @@ func (tuo *TopicUpdateOne) sqlSave(ctx context.Context) (t *Topic, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
+					Type:   field.TypeInt,
 					Column: blogpost.FieldID,
 				},
 			},
@@ -456,7 +455,7 @@ func (tuo *TopicUpdateOne) sqlSave(ctx context.Context) (t *Topic, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
+					Type:   field.TypeInt,
 					Column: blogpost.FieldID,
 				},
 			},
@@ -475,7 +474,7 @@ func (tuo *TopicUpdateOne) sqlSave(ctx context.Context) (t *Topic, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
+					Type:   field.TypeInt,
 					Column: project.FieldID,
 				},
 			},
@@ -494,7 +493,7 @@ func (tuo *TopicUpdateOne) sqlSave(ctx context.Context) (t *Topic, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeUUID,
+					Type:   field.TypeInt,
 					Column: project.FieldID,
 				},
 			},

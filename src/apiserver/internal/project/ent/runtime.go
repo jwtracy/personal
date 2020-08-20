@@ -21,7 +21,7 @@ func init() {
 	blogpostFields := schema.BlogPost{}.Fields()
 	_ = blogpostFields
 	// blogpostDescHead is the schema descriptor for head field.
-	blogpostDescHead := blogpostMixinFields0[1].Descriptor()
+	blogpostDescHead := blogpostMixinFields0[0].Descriptor()
 	// blogpost.HeadValidator is a validator for the "head" field. It is called by the builders before save.
 	blogpost.HeadValidator = func() func(string) error {
 		validators := blogpostDescHead.Validators
@@ -39,7 +39,7 @@ func init() {
 		}
 	}()
 	// blogpostDescBody is the schema descriptor for body field.
-	blogpostDescBody := blogpostMixinFields0[2].Descriptor()
+	blogpostDescBody := blogpostMixinFields0[1].Descriptor()
 	// blogpost.BodyValidator is a validator for the "body" field. It is called by the builders before save.
 	blogpost.BodyValidator = blogpostDescBody.Validators[0].(func(string) error)
 	// blogpostDescCreateTime is the schema descriptor for create_time field.
@@ -58,7 +58,7 @@ func init() {
 	projectFields := schema.Project{}.Fields()
 	_ = projectFields
 	// projectDescHead is the schema descriptor for head field.
-	projectDescHead := projectMixinFields0[1].Descriptor()
+	projectDescHead := projectMixinFields0[0].Descriptor()
 	// project.HeadValidator is a validator for the "head" field. It is called by the builders before save.
 	project.HeadValidator = func() func(string) error {
 		validators := projectDescHead.Validators
@@ -76,7 +76,7 @@ func init() {
 		}
 	}()
 	// projectDescBody is the schema descriptor for body field.
-	projectDescBody := projectMixinFields0[2].Descriptor()
+	projectDescBody := projectMixinFields0[1].Descriptor()
 	// project.BodyValidator is a validator for the "body" field. It is called by the builders before save.
 	project.BodyValidator = projectDescBody.Validators[0].(func(string) error)
 	// projectDescCreateTime is the schema descriptor for create_time field.

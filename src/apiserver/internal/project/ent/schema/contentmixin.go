@@ -4,7 +4,6 @@ import (
 	"github.com/facebook/ent"
 	"github.com/facebook/ent/schema/field"
 	"github.com/facebook/ent/schema/mixin"
-	"github.com/google/uuid"
 )
 
 const (
@@ -17,9 +16,6 @@ type ContentMixin struct {
 
 func (ContentMixin) Fields() []ent.Field {
 	return []ent.Field{
-		field.UUID("id", uuid.New()).
-			Immutable().
-			Unique(),
 		field.String("head").
 			NotEmpty().
 			MaxLen(HeaderMaxLen),

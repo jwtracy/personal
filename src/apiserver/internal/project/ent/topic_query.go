@@ -12,7 +12,6 @@ import (
 	"github.com/facebook/ent/dialect/sql"
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
-	"github.com/google/uuid"
 	"github.com/johnwtracy/personal/src/apiserver/internal/project/ent/blogpost"
 	"github.com/johnwtracy/personal/src/apiserver/internal/project/ent/predicate"
 	"github.com/johnwtracy/personal/src/apiserver/internal/project/ent/project"
@@ -396,8 +395,8 @@ func (tq *TopicQuery) sqlAll(ctx context.Context) ([]*Topic, error) {
 			fks = append(fks, node.ID)
 		}
 		var (
-			edgeids []uuid.UUID
-			edges   = make(map[uuid.UUID][]*Topic)
+			edgeids []int
+			edges   = make(map[int][]*Topic)
 		)
 		_spec := &sqlgraph.EdgeQuerySpec{
 			Edge: &sqlgraph.EdgeSpec{
@@ -410,19 +409,19 @@ func (tq *TopicQuery) sqlAll(ctx context.Context) ([]*Topic, error) {
 			},
 
 			ScanValues: func() [2]interface{} {
-				return [2]interface{}{&sql.NullInt64{}, &uuid.UUID{}}
+				return [2]interface{}{&sql.NullInt64{}, &sql.NullInt64{}}
 			},
 			Assign: func(out, in interface{}) error {
 				eout, ok := out.(*sql.NullInt64)
 				if !ok || eout == nil {
 					return fmt.Errorf("unexpected id value for edge-out")
 				}
-				ein, ok := in.(*uuid.UUID)
+				ein, ok := in.(*sql.NullInt64)
 				if !ok || ein == nil {
 					return fmt.Errorf("unexpected id value for edge-in")
 				}
 				outValue := int(eout.Int64)
-				inValue := *ein
+				inValue := int(ein.Int64)
 				node, ok := ids[outValue]
 				if !ok {
 					return fmt.Errorf("unexpected node id in edges: %v", outValue)
@@ -459,8 +458,8 @@ func (tq *TopicQuery) sqlAll(ctx context.Context) ([]*Topic, error) {
 			fks = append(fks, node.ID)
 		}
 		var (
-			edgeids []uuid.UUID
-			edges   = make(map[uuid.UUID][]*Topic)
+			edgeids []int
+			edges   = make(map[int][]*Topic)
 		)
 		_spec := &sqlgraph.EdgeQuerySpec{
 			Edge: &sqlgraph.EdgeSpec{
@@ -473,19 +472,19 @@ func (tq *TopicQuery) sqlAll(ctx context.Context) ([]*Topic, error) {
 			},
 
 			ScanValues: func() [2]interface{} {
-				return [2]interface{}{&sql.NullInt64{}, &uuid.UUID{}}
+				return [2]interface{}{&sql.NullInt64{}, &sql.NullInt64{}}
 			},
 			Assign: func(out, in interface{}) error {
 				eout, ok := out.(*sql.NullInt64)
 				if !ok || eout == nil {
 					return fmt.Errorf("unexpected id value for edge-out")
 				}
-				ein, ok := in.(*uuid.UUID)
+				ein, ok := in.(*sql.NullInt64)
 				if !ok || ein == nil {
 					return fmt.Errorf("unexpected id value for edge-in")
 				}
 				outValue := int(eout.Int64)
-				inValue := *ein
+				inValue := int(ein.Int64)
 				node, ok := ids[outValue]
 				if !ok {
 					return fmt.Errorf("unexpected node id in edges: %v", outValue)

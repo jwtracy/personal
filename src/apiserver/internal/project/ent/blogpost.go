@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/facebook/ent/dialect/sql"
-	"github.com/google/uuid"
 	"github.com/johnwtracy/personal/src/apiserver/internal/project/ent/blogpost"
 )
 
@@ -16,7 +15,7 @@ import (
 type BlogPost struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID uuid.UUID `json:"id,omitempty"`
+	ID int `json:"id,omitempty"`
 	// Head holds the value of the "head" field.
 	Head string `json:"head,omitempty"`
 	// Body holds the value of the "body" field.
@@ -51,7 +50,7 @@ func (e BlogPostEdges) TagsOrErr() ([]*Topic, error) {
 // scanValues returns the types for scanning values from sql.Rows.
 func (*BlogPost) scanValues() []interface{} {
 	return []interface{}{
-		&uuid.UUID{},      // id
+		&sql.NullInt64{},  // id
 		&sql.NullString{}, // head
 		&sql.NullString{}, // body
 		&sql.NullTime{},   // create_time
@@ -65,11 +64,11 @@ func (bp *BlogPost) assignValues(values ...interface{}) error {
 	if m, n := len(values), len(blogpost.Columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
-	if value, ok := values[0].(*uuid.UUID); !ok {
-		return fmt.Errorf("unexpected type %T for field id", values[0])
-	} else if value != nil {
-		bp.ID = *value
+	value, ok := values[0].(*sql.NullInt64)
+	if !ok {
+		return fmt.Errorf("unexpected type %T for field id", value)
 	}
+	bp.ID = int(value.Int64)
 	values = values[1:]
 	if value, ok := values[0].(*sql.NullString); !ok {
 		return fmt.Errorf("unexpected type %T for field head", values[0])

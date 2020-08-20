@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/google/uuid"
 	"github.com/johnwtracy/personal/src/apiserver/internal/project/ent/migrate"
 
 	"github.com/johnwtracy/personal/src/apiserver/internal/project/ent/blogpost"
@@ -172,7 +171,7 @@ func (c *BlogPostClient) UpdateOne(bp *BlogPost) *BlogPostUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *BlogPostClient) UpdateOneID(id uuid.UUID) *BlogPostUpdateOne {
+func (c *BlogPostClient) UpdateOneID(id int) *BlogPostUpdateOne {
 	mutation := newBlogPostMutation(c.config, OpUpdateOne, withBlogPostID(id))
 	return &BlogPostUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -189,7 +188,7 @@ func (c *BlogPostClient) DeleteOne(bp *BlogPost) *BlogPostDeleteOne {
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *BlogPostClient) DeleteOneID(id uuid.UUID) *BlogPostDeleteOne {
+func (c *BlogPostClient) DeleteOneID(id int) *BlogPostDeleteOne {
 	builder := c.Delete().Where(blogpost.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -202,12 +201,12 @@ func (c *BlogPostClient) Query() *BlogPostQuery {
 }
 
 // Get returns a BlogPost entity by its id.
-func (c *BlogPostClient) Get(ctx context.Context, id uuid.UUID) (*BlogPost, error) {
+func (c *BlogPostClient) Get(ctx context.Context, id int) (*BlogPost, error) {
 	return c.Query().Where(blogpost.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *BlogPostClient) GetX(ctx context.Context, id uuid.UUID) *BlogPost {
+func (c *BlogPostClient) GetX(ctx context.Context, id int) *BlogPost {
 	bp, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -276,7 +275,7 @@ func (c *ProjectClient) UpdateOne(pr *Project) *ProjectUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *ProjectClient) UpdateOneID(id uuid.UUID) *ProjectUpdateOne {
+func (c *ProjectClient) UpdateOneID(id int) *ProjectUpdateOne {
 	mutation := newProjectMutation(c.config, OpUpdateOne, withProjectID(id))
 	return &ProjectUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -293,7 +292,7 @@ func (c *ProjectClient) DeleteOne(pr *Project) *ProjectDeleteOne {
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *ProjectClient) DeleteOneID(id uuid.UUID) *ProjectDeleteOne {
+func (c *ProjectClient) DeleteOneID(id int) *ProjectDeleteOne {
 	builder := c.Delete().Where(project.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -306,12 +305,12 @@ func (c *ProjectClient) Query() *ProjectQuery {
 }
 
 // Get returns a Project entity by its id.
-func (c *ProjectClient) Get(ctx context.Context, id uuid.UUID) (*Project, error) {
+func (c *ProjectClient) Get(ctx context.Context, id int) (*Project, error) {
 	return c.Query().Where(project.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *ProjectClient) GetX(ctx context.Context, id uuid.UUID) *Project {
+func (c *ProjectClient) GetX(ctx context.Context, id int) *Project {
 	pr, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)

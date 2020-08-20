@@ -8,7 +8,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/johnwtracy/personal/src/apiserver/internal/project/ent/blogpost"
 	"github.com/johnwtracy/personal/src/apiserver/internal/project/ent/project"
 	"github.com/johnwtracy/personal/src/apiserver/internal/project/ent/topic"
@@ -36,7 +35,7 @@ type BlogPostMutation struct {
 	config
 	op            Op
 	typ           string
-	id            *uuid.UUID
+	id            *int
 	head          *string
 	body          *string
 	create_time   *time.Time
@@ -68,7 +67,7 @@ func newBlogPostMutation(c config, op Op, opts ...blogpostOption) *BlogPostMutat
 }
 
 // withBlogPostID sets the id field of the mutation.
-func withBlogPostID(id uuid.UUID) blogpostOption {
+func withBlogPostID(id int) blogpostOption {
 	return func(m *BlogPostMutation) {
 		var (
 			err   error
@@ -118,15 +117,9 @@ func (m BlogPostMutation) Tx() (*Tx, error) {
 	return tx, nil
 }
 
-// SetID sets the value of the id field. Note that, this
-// operation is accepted only on BlogPost creation.
-func (m *BlogPostMutation) SetID(id uuid.UUID) {
-	m.id = &id
-}
-
 // ID returns the id value in the mutation. Note that, the id
 // is available only if it was provided to the builder.
-func (m *BlogPostMutation) ID() (id uuid.UUID, exists bool) {
+func (m *BlogPostMutation) ID() (id int, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -575,7 +568,7 @@ type ProjectMutation struct {
 	config
 	op            Op
 	typ           string
-	id            *uuid.UUID
+	id            *int
 	head          *string
 	body          *string
 	create_time   *time.Time
@@ -609,7 +602,7 @@ func newProjectMutation(c config, op Op, opts ...projectOption) *ProjectMutation
 }
 
 // withProjectID sets the id field of the mutation.
-func withProjectID(id uuid.UUID) projectOption {
+func withProjectID(id int) projectOption {
 	return func(m *ProjectMutation) {
 		var (
 			err   error
@@ -659,15 +652,9 @@ func (m ProjectMutation) Tx() (*Tx, error) {
 	return tx, nil
 }
 
-// SetID sets the value of the id field. Note that, this
-// operation is accepted only on Project creation.
-func (m *ProjectMutation) SetID(id uuid.UUID) {
-	m.id = &id
-}
-
 // ID returns the id value in the mutation. Note that, the id
 // is available only if it was provided to the builder.
-func (m *ProjectMutation) ID() (id uuid.UUID, exists bool) {
+func (m *ProjectMutation) ID() (id int, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -1249,10 +1236,10 @@ type TopicMutation struct {
 	id                *int
 	tag               *string
 	clearedFields     map[string]struct{}
-	blog_posts        map[uuid.UUID]struct{}
-	removedblog_posts map[uuid.UUID]struct{}
-	projects          map[uuid.UUID]struct{}
-	removedprojects   map[uuid.UUID]struct{}
+	blog_posts        map[int]struct{}
+	removedblog_posts map[int]struct{}
+	projects          map[int]struct{}
+	removedprojects   map[int]struct{}
 	done              bool
 	oldValue          func(context.Context) (*Topic, error)
 }
@@ -1374,9 +1361,9 @@ func (m *TopicMutation) ResetTag() {
 }
 
 // AddBlogPostIDs adds the blog_posts edge to BlogPost by ids.
-func (m *TopicMutation) AddBlogPostIDs(ids ...uuid.UUID) {
+func (m *TopicMutation) AddBlogPostIDs(ids ...int) {
 	if m.blog_posts == nil {
-		m.blog_posts = make(map[uuid.UUID]struct{})
+		m.blog_posts = make(map[int]struct{})
 	}
 	for i := range ids {
 		m.blog_posts[ids[i]] = struct{}{}
@@ -1384,9 +1371,9 @@ func (m *TopicMutation) AddBlogPostIDs(ids ...uuid.UUID) {
 }
 
 // RemoveBlogPostIDs removes the blog_posts edge to BlogPost by ids.
-func (m *TopicMutation) RemoveBlogPostIDs(ids ...uuid.UUID) {
+func (m *TopicMutation) RemoveBlogPostIDs(ids ...int) {
 	if m.removedblog_posts == nil {
-		m.removedblog_posts = make(map[uuid.UUID]struct{})
+		m.removedblog_posts = make(map[int]struct{})
 	}
 	for i := range ids {
 		m.removedblog_posts[ids[i]] = struct{}{}
@@ -1394,7 +1381,7 @@ func (m *TopicMutation) RemoveBlogPostIDs(ids ...uuid.UUID) {
 }
 
 // RemovedBlogPosts returns the removed ids of blog_posts.
-func (m *TopicMutation) RemovedBlogPostsIDs() (ids []uuid.UUID) {
+func (m *TopicMutation) RemovedBlogPostsIDs() (ids []int) {
 	for id := range m.removedblog_posts {
 		ids = append(ids, id)
 	}
@@ -1402,7 +1389,7 @@ func (m *TopicMutation) RemovedBlogPostsIDs() (ids []uuid.UUID) {
 }
 
 // BlogPostsIDs returns the blog_posts ids in the mutation.
-func (m *TopicMutation) BlogPostsIDs() (ids []uuid.UUID) {
+func (m *TopicMutation) BlogPostsIDs() (ids []int) {
 	for id := range m.blog_posts {
 		ids = append(ids, id)
 	}
@@ -1416,9 +1403,9 @@ func (m *TopicMutation) ResetBlogPosts() {
 }
 
 // AddProjectIDs adds the projects edge to Project by ids.
-func (m *TopicMutation) AddProjectIDs(ids ...uuid.UUID) {
+func (m *TopicMutation) AddProjectIDs(ids ...int) {
 	if m.projects == nil {
-		m.projects = make(map[uuid.UUID]struct{})
+		m.projects = make(map[int]struct{})
 	}
 	for i := range ids {
 		m.projects[ids[i]] = struct{}{}
@@ -1426,9 +1413,9 @@ func (m *TopicMutation) AddProjectIDs(ids ...uuid.UUID) {
 }
 
 // RemoveProjectIDs removes the projects edge to Project by ids.
-func (m *TopicMutation) RemoveProjectIDs(ids ...uuid.UUID) {
+func (m *TopicMutation) RemoveProjectIDs(ids ...int) {
 	if m.removedprojects == nil {
-		m.removedprojects = make(map[uuid.UUID]struct{})
+		m.removedprojects = make(map[int]struct{})
 	}
 	for i := range ids {
 		m.removedprojects[ids[i]] = struct{}{}
@@ -1436,7 +1423,7 @@ func (m *TopicMutation) RemoveProjectIDs(ids ...uuid.UUID) {
 }
 
 // RemovedProjects returns the removed ids of projects.
-func (m *TopicMutation) RemovedProjectsIDs() (ids []uuid.UUID) {
+func (m *TopicMutation) RemovedProjectsIDs() (ids []int) {
 	for id := range m.removedprojects {
 		ids = append(ids, id)
 	}
@@ -1444,7 +1431,7 @@ func (m *TopicMutation) RemovedProjectsIDs() (ids []uuid.UUID) {
 }
 
 // ProjectsIDs returns the projects ids in the mutation.
-func (m *TopicMutation) ProjectsIDs() (ids []uuid.UUID) {
+func (m *TopicMutation) ProjectsIDs() (ids []int) {
 	for id := range m.projects {
 		ids = append(ids, id)
 	}

@@ -7,33 +7,32 @@ import (
 
 	"github.com/facebook/ent/dialect/sql"
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
-	"github.com/google/uuid"
 	"github.com/johnwtracy/personal/src/apiserver/internal/project/ent/predicate"
 )
 
 // ID filters vertices based on their identifier.
-func ID(id uuid.UUID) predicate.Project {
+func ID(id int) predicate.Project {
 	return predicate.Project(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldID), id))
 	})
 }
 
 // IDEQ applies the EQ predicate on the ID field.
-func IDEQ(id uuid.UUID) predicate.Project {
+func IDEQ(id int) predicate.Project {
 	return predicate.Project(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldID), id))
 	})
 }
 
 // IDNEQ applies the NEQ predicate on the ID field.
-func IDNEQ(id uuid.UUID) predicate.Project {
+func IDNEQ(id int) predicate.Project {
 	return predicate.Project(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldID), id))
 	})
 }
 
 // IDIn applies the In predicate on the ID field.
-func IDIn(ids ...uuid.UUID) predicate.Project {
+func IDIn(ids ...int) predicate.Project {
 	return predicate.Project(func(s *sql.Selector) {
 		// if not arguments were provided, append the FALSE constants,
 		// since we can't apply "IN ()". This will make this predicate falsy.
@@ -50,7 +49,7 @@ func IDIn(ids ...uuid.UUID) predicate.Project {
 }
 
 // IDNotIn applies the NotIn predicate on the ID field.
-func IDNotIn(ids ...uuid.UUID) predicate.Project {
+func IDNotIn(ids ...int) predicate.Project {
 	return predicate.Project(func(s *sql.Selector) {
 		// if not arguments were provided, append the FALSE constants,
 		// since we can't apply "IN ()". This will make this predicate falsy.
@@ -67,28 +66,28 @@ func IDNotIn(ids ...uuid.UUID) predicate.Project {
 }
 
 // IDGT applies the GT predicate on the ID field.
-func IDGT(id uuid.UUID) predicate.Project {
+func IDGT(id int) predicate.Project {
 	return predicate.Project(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldID), id))
 	})
 }
 
 // IDGTE applies the GTE predicate on the ID field.
-func IDGTE(id uuid.UUID) predicate.Project {
+func IDGTE(id int) predicate.Project {
 	return predicate.Project(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldID), id))
 	})
 }
 
 // IDLT applies the LT predicate on the ID field.
-func IDLT(id uuid.UUID) predicate.Project {
+func IDLT(id int) predicate.Project {
 	return predicate.Project(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldID), id))
 	})
 }
 
 // IDLTE applies the LTE predicate on the ID field.
-func IDLTE(id uuid.UUID) predicate.Project {
+func IDLTE(id int) predicate.Project {
 	return predicate.Project(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldID), id))
 	})

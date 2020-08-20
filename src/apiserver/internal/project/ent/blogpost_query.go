@@ -12,7 +12,6 @@ import (
 	"github.com/facebook/ent/dialect/sql"
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
-	"github.com/google/uuid"
 	"github.com/johnwtracy/personal/src/apiserver/internal/project/ent/blogpost"
 	"github.com/johnwtracy/personal/src/apiserver/internal/project/ent/predicate"
 	"github.com/johnwtracy/personal/src/apiserver/internal/project/ent/topic"
@@ -97,8 +96,8 @@ func (bpq *BlogPostQuery) FirstX(ctx context.Context) *BlogPost {
 }
 
 // FirstID returns the first BlogPost id in the query. Returns *NotFoundError when no id was found.
-func (bpq *BlogPostQuery) FirstID(ctx context.Context) (id uuid.UUID, err error) {
-	var ids []uuid.UUID
+func (bpq *BlogPostQuery) FirstID(ctx context.Context) (id int, err error) {
+	var ids []int
 	if ids, err = bpq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -110,7 +109,7 @@ func (bpq *BlogPostQuery) FirstID(ctx context.Context) (id uuid.UUID, err error)
 }
 
 // FirstXID is like FirstID, but panics if an error occurs.
-func (bpq *BlogPostQuery) FirstXID(ctx context.Context) uuid.UUID {
+func (bpq *BlogPostQuery) FirstXID(ctx context.Context) int {
 	id, err := bpq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -144,8 +143,8 @@ func (bpq *BlogPostQuery) OnlyX(ctx context.Context) *BlogPost {
 }
 
 // OnlyID returns the only BlogPost id in the query, returns an error if not exactly one id was returned.
-func (bpq *BlogPostQuery) OnlyID(ctx context.Context) (id uuid.UUID, err error) {
-	var ids []uuid.UUID
+func (bpq *BlogPostQuery) OnlyID(ctx context.Context) (id int, err error) {
+	var ids []int
 	if ids, err = bpq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -161,7 +160,7 @@ func (bpq *BlogPostQuery) OnlyID(ctx context.Context) (id uuid.UUID, err error) 
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (bpq *BlogPostQuery) OnlyIDX(ctx context.Context) uuid.UUID {
+func (bpq *BlogPostQuery) OnlyIDX(ctx context.Context) int {
 	id, err := bpq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -187,8 +186,8 @@ func (bpq *BlogPostQuery) AllX(ctx context.Context) []*BlogPost {
 }
 
 // IDs executes the query and returns a list of BlogPost ids.
-func (bpq *BlogPostQuery) IDs(ctx context.Context) ([]uuid.UUID, error) {
-	var ids []uuid.UUID
+func (bpq *BlogPostQuery) IDs(ctx context.Context) ([]int, error) {
+	var ids []int
 	if err := bpq.Select(blogpost.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -196,7 +195,7 @@ func (bpq *BlogPostQuery) IDs(ctx context.Context) ([]uuid.UUID, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (bpq *BlogPostQuery) IDsX(ctx context.Context) []uuid.UUID {
+func (bpq *BlogPostQuery) IDsX(ctx context.Context) []int {
 	ids, err := bpq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -358,7 +357,7 @@ func (bpq *BlogPostQuery) sqlAll(ctx context.Context) ([]*BlogPost, error) {
 
 	if query := bpq.withTags; query != nil {
 		fks := make([]driver.Value, 0, len(nodes))
-		ids := make(map[uuid.UUID]*BlogPost, len(nodes))
+		ids := make(map[int]*BlogPost, len(nodes))
 		for _, node := range nodes {
 			ids[node.ID] = node
 			fks = append(fks, node.ID)
@@ -378,10 +377,10 @@ func (bpq *BlogPostQuery) sqlAll(ctx context.Context) ([]*BlogPost, error) {
 			},
 
 			ScanValues: func() [2]interface{} {
-				return [2]interface{}{&uuid.UUID{}, &sql.NullInt64{}}
+				return [2]interface{}{&sql.NullInt64{}, &sql.NullInt64{}}
 			},
 			Assign: func(out, in interface{}) error {
-				eout, ok := out.(*uuid.UUID)
+				eout, ok := out.(*sql.NullInt64)
 				if !ok || eout == nil {
 					return fmt.Errorf("unexpected id value for edge-out")
 				}
@@ -389,7 +388,7 @@ func (bpq *BlogPostQuery) sqlAll(ctx context.Context) ([]*BlogPost, error) {
 				if !ok || ein == nil {
 					return fmt.Errorf("unexpected id value for edge-in")
 				}
-				outValue := *eout
+				outValue := int(eout.Int64)
 				inValue := int(ein.Int64)
 				node, ok := ids[outValue]
 				if !ok {
@@ -441,7 +440,7 @@ func (bpq *BlogPostQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   blogpost.Table,
 			Columns: blogpost.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeInt,
 				Column: blogpost.FieldID,
 			},
 		},

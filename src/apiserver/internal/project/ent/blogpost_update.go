@@ -147,7 +147,7 @@ func (bpu *BlogPostUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Table:   blogpost.Table,
 			Columns: blogpost.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeInt,
 				Column: blogpost.FieldID,
 			},
 		},
@@ -355,7 +355,7 @@ func (bpuo *BlogPostUpdateOne) sqlSave(ctx context.Context) (bp *BlogPost, err e
 			Table:   blogpost.Table,
 			Columns: blogpost.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeInt,
 				Column: blogpost.FieldID,
 			},
 		},

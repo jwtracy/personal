@@ -10,7 +10,6 @@ import (
 
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
-	"github.com/google/uuid"
 	"github.com/johnwtracy/personal/src/apiserver/internal/project/ent/project"
 	"github.com/johnwtracy/personal/src/apiserver/internal/project/ent/topic"
 )
@@ -79,12 +78,6 @@ func (pc *ProjectCreate) SetNillableCompleted(t *time.Time) *ProjectCreate {
 	if t != nil {
 		pc.SetCompleted(*t)
 	}
-	return pc
-}
-
-// SetID sets the id field.
-func (pc *ProjectCreate) SetID(u uuid.UUID) *ProjectCreate {
-	pc.mutation.SetID(u)
 	return pc
 }
 
@@ -188,6 +181,8 @@ func (pc *ProjectCreate) sqlSave(ctx context.Context) (*Project, error) {
 		}
 		return nil, err
 	}
+	id := _spec.ID.Value.(int64)
+	pr.ID = int(id)
 	return pr, nil
 }
 
@@ -197,15 +192,11 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 		_spec = &sqlgraph.CreateSpec{
 			Table: project.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeInt,
 				Column: project.FieldID,
 			},
 		}
 	)
-	if id, ok := pc.mutation.ID(); ok {
-		pr.ID = id
-		_spec.ID.Value = id
-	}
 	if value, ok := pc.mutation.Head(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -315,6 +306,8 @@ func (pcb *ProjectCreateBulk) Save(ctx context.Context) ([]*Project, error) {
 				if err != nil {
 					return nil, err
 				}
+				id := specs[i].ID.Value.(int64)
+				nodes[i].ID = int(id)
 				return nodes[i], nil
 			})
 			for i := len(builder.hooks) - 1; i >= 0; i-- {

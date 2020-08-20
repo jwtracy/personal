@@ -56,7 +56,7 @@ spec:
       - args:
         - -v=10
         - -alsologtostderr=true
-        image: registry.digitalocean.com/jwtracy-personal/app-apiserver:20200817-2341
+        image: registry.digitalocean.com/jwtracy-personal/app-apiserver:20200818-2238
         imagePullPolicy: IfNotPresent
         name: app-apiserver
         resources:
@@ -85,7 +85,7 @@ spec:
         app: webapp
     spec:
       containers:
-      - image: registry.digitalocean.com/jwtracy-personal/app-webapp:20200817-2341
+      - image: registry.digitalocean.com/jwtracy-personal/app-webapp:20200818-2238
         imagePullPolicy: IfNotPresent
         name: app-webapp
         resources:

@@ -47,8 +47,7 @@ func TestTopic(t *testing.T) {
 			SetStarted(time.Now().Add(-time.Hour)).
 			SaveX(ctx),
 		client.Project.Create().
-			SetHead("H2").
-			SetBody("B2").
+			SetHead("H2").SetBody("B2").
 			AddTags(topics[0]).
 			SetStarted(time.Now().Add(-time.Hour)).
 			SetCompleted(time.Now()).

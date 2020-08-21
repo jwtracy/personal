@@ -5,11 +5,11 @@ resources:
 - ingress.yaml
 - apiserver/manifest.yaml
 - webapp/manifest.yaml
+- postgres/manifest.yaml
+namespace: app
 images:
 - name: app-apiserver
   newName: registry.digitalocean.com/jwtracy-personal/app-apiserver
-  newTag: tag
 images:
 - name: app-webapp
   newName: registry.digitalocean.com/jwtracy-personal/app-webapp
-  newTag: tag

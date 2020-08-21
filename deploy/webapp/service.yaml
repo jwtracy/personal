@@ -4,10 +4,9 @@ metadata:
   labels:
     app: webapp
   name: webapp
-  namespace: app
 spec:
-  externalIPs:
-  - 68.183.249.43
+  # externalIPs:
+  # - 68.183.249.43
   ports:
   - name: webapp
     port: 4500

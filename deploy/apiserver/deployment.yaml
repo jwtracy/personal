@@ -2,18 +2,17 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: app
-  name: app
-  namespace: app
+    app: apiserver
+  name: apiserver
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: app
+      app: apiserver
   template:
     metadata:
       labels:
-        app: app
+        app: apiserver
     spec:
       containers:
       - image: app-apiserver

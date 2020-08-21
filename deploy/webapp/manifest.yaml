@@ -4,10 +4,7 @@ metadata:
   labels:
     app: webapp
   name: webapp
-  namespace: app
 spec:
-  externalIPs:
-  - 68.183.249.43
   ports:
   - name: webapp
     port: 4500
@@ -23,7 +20,6 @@ metadata:
   labels:
     app: webapp
   name: webapp
-  namespace: app
 spec:
   replicas: 1
   selector:
@@ -35,7 +31,7 @@ spec:
         app: webapp
     spec:
       containers:
-      - image: registry.digitalocean.com/jwtracy-personal/app-webapp:20200818-2238
+      - image: registry.digitalocean.com/jwtracy-personal/app-webapp:20200820-2108
         imagePullPolicy: IfNotPresent
         name: app-webapp
         resources:

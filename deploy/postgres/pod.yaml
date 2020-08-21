@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: postgres
+  name: postgres
+spec:
+  containers:
+  - name: postgres
+    image: postgres:12-alpine
+    envFrom:
+    - configMapRef:
+        name: postgres-config
+    ports:
+    - containerPort: 5432
+      name: postgres
+    volumeMounts:
+    - name: postgresdb
+      mountPath: /var/lib/postgresql/data
+      subPath: postgres
+  volumes:
+  - name: postgresdb
+    persistentVolumeClaim:
+      claimName: postgres
+

@@ -10,6 +10,9 @@ webapp: build-webapp push-webapp
 
 apiserver: build-apiserver push-apiserver 
 
+schema:
+	cd src/apiserver/internal && entc generate ./ent/schema
+
 #--go_opt=paths=source_relative
 proto-%:
 	cd src/apiserver/$*/pb && protoc --proto_path=$(GOPATH)/src:. \
@@ -18,7 +21,7 @@ proto-%:
 			--descriptor_set_out=$*.pb \
 			$*.proto
 
-deploy: generate-apiserver generate-webapp
+deploy: generate-apiserver generate-webapp generate-postgres
 	kustomize build deploy/ > deploy/manifest.yaml
 	kubectl apply -f deploy/manifest.yaml
 

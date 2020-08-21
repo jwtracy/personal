@@ -2,42 +2,38 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: app
-  name: app
-  namespace: app
+    app: apiserver
+  name: apiserver
 spec:
-  externalIPs:
-  - 68.183.249.43
   ports:
-  - name: app
+  - name: apiserver
     port: 8080
     protocol: TCP
   selector:
-    app: app
+    app: apiserver
   type: NodePort
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: app
-  name: app
-  namespace: app
+    app: apiserver
+  name: apiserver
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: app
+      app: apiserver
   template:
     metadata:
       labels:
-        app: app
+        app: apiserver
     spec:
       containers:
       - args:
         - -v=10
         - -alsologtostderr=true
-        image: registry.digitalocean.com/jwtracy-personal/app-apiserver:20200818-2238
+        image: registry.digitalocean.com/jwtracy-personal/app-apiserver:20200820-2108
         imagePullPolicy: IfNotPresent
         name: app-apiserver
         resources:

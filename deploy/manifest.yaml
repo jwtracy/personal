@@ -1,20 +1,45 @@
 apiVersion: v1
+data:
+  POSTGRES_DB: personaldb
+  POSTGRES_PASSWORD: password123
+  POSTGRES_USER: johnwtracy
+kind: ConfigMap
+metadata:
+  labels:
+    app: postgres
+  name: postgres-config
+  namespace: app
+---
+apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: app
-  name: app
+    app: apiserver
+  name: apiserver
   namespace: app
 spec:
-  externalIPs:
-  - 68.183.249.43
   ports:
-  - name: app
+  - name: apiserver
     port: 8080
     protocol: TCP
   selector:
-    app: app
+    app: apiserver
   type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: postgres
+  name: postgres
+  namespace: app
+spec:
+  clusterIP: None
+  ports:
+  - name: postgres
+    port: 5432
+  selector:
+    app: postgres
 ---
 apiVersion: v1
 kind: Service
@@ -24,8 +49,6 @@ metadata:
   name: webapp
   namespace: app
 spec:
-  externalIPs:
-  - 68.183.249.43
   ports:
   - name: webapp
     port: 4500
@@ -39,24 +62,24 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: app
-  name: app
+    app: apiserver
+  name: apiserver
   namespace: app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: app
+      app: apiserver
   template:
     metadata:
       labels:
-        app: app
+        app: apiserver
     spec:
       containers:
       - args:
         - -v=10
         - -alsologtostderr=true
-        image: registry.digitalocean.com/jwtracy-personal/app-apiserver:20200818-2238
+        image: registry.digitalocean.com/jwtracy-personal/app-apiserver:20200820-2108
         imagePullPolicy: IfNotPresent
         name: app-apiserver
         resources:
@@ -85,7 +108,7 @@ spec:
         app: webapp
     spec:
       containers:
-      - image: registry.digitalocean.com/jwtracy-personal/app-webapp:20200818-2238
+      - image: registry.digitalocean.com/jwtracy-personal/app-webapp:20200820-2108
         imagePullPolicy: IfNotPresent
         name: app-webapp
         resources:
@@ -117,3 +140,42 @@ spec:
           servicePort: 8080
         path: /api(/)(.*)
         pathType: Prefix
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres
+  namespace: app
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 16Gi
+  storageClassName: do-block-storage
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: postgres
+  name: postgres
+  namespace: app
+spec:
+  containers:
+  - envFrom:
+    - configMapRef:
+        name: postgres-config
+    image: postgres:12-alpine
+    name: postgres
+    ports:
+    - containerPort: 5432
+      name: postgres
+    volumeMounts:
+    - mountPath: /var/lib/postgresql/data
+      name: postgresdb
+      subPath: postgres
+  volumes:
+  - name: postgresdb
+    persistentVolumeClaim:
+      claimName: postgres

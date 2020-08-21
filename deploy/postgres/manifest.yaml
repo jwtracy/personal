@@ -1,0 +1,65 @@
+apiVersion: v1
+data:
+  POSTGRES_DB: personaldb
+  POSTGRES_PASSWORD: password123
+  POSTGRES_USER: johnwtracy
+kind: ConfigMap
+metadata:
+  labels:
+    app: postgres
+  name: postgres-config
+  namespace: app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: postgres
+  name: postgres
+  namespace: app
+spec:
+  clusterIP: None
+  ports:
+  - name: postgres
+    port: 5432
+  selector:
+    app: postgres
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres
+  namespace: app
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 16Gi
+  storageClassName: do-block-storage
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: postgres
+  name: postgres
+  namespace: app
+spec:
+  containers:
+  - envFrom:
+    - configMapRef:
+        name: postgres-config
+    image: postgres:12-alpine
+    name: postgres
+    ports:
+    - containerPort: 5432
+      name: postgres
+    volumeMounts:
+    - mountPath: /var/lib/postgresql/data
+      name: postgresdb
+      subPath: postgres
+  volumes:
+  - name: postgresdb
+    persistentVolumeClaim:
+      claimName: postgres
